@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:RandomTeamer"
         xmlns:ff="clr-namespace:FunctionalFun.UI.Behaviours"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="RandomTeamer.MainWindow"
-        Title="MainWindow" Height="460" Width="460"
+        Title="MainWindow" Height="810" Width="460" MinHeight="460"
         ResizeMode="NoResize">
 
     <Window.DataContext>
@@ -19,21 +19,33 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <!--Input-->
-        <StackPanel Grid.Column="0" Grid.Row="0" Margin="10" Width="128">
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="10,10,11,18" Width="128">
             <Label Content="New User"/>
-            <TextBox x:Name="NameInput" Text="{Binding CurrentName}"/>
-            <Button Margin="0,5,0,0" x:Name="ButtonAddMember" Content="Add User" Command="{Binding AddMember}" Height="62"/>
+            <TextBox x:Name="NameInput" Text="{Binding CurrentName, Mode = TwoWay, UpdateSourceTrigger = PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding AddMember}"/>
+                    <KeyBinding Key="Enter" Command="{Binding AddMember}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Margin="0,5,0,0" x:Name="ButtonAddMember" Content="Add User" Command="{Binding AddMember}" Height="64"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="0,5,5,0" x:Name="ButtonSaveNames" Content="Save" Command="{Binding SaveNames}" Height="24" HorizontalAlignment="Stretch" Width="61"/>
+                <Button Margin="0,5,5,0" x:Name="ButtonLoadNames" Content="Load" Command="{Binding LoadNames}" Height="24" HorizontalAlignment="Stretch" Width="61"/>
+            </StackPanel>
+
         </StackPanel>
-        
+
         <!--All users-->
         <StackPanel Grid.Column="0" Grid.Row="1" Margin="10" Width="128">
-            <Label Content="All Users"/>
-            <ListBox Height="180"
-                     AlternationCount="{Binding Path=AllMembers.Count}"
+            <StackPanel Orientation="Horizontal">
+                <Label Content="All Users"/>
+                <Label Content="{Binding Path=AllMembers.Count}"/>
+            </StackPanel>
+            <ListBox Height="484" MinHeight="182"
                      x:Name="AllMembersList"
                      ItemsSource="{Binding AllMembers}"
                      SelectionMode="Extended"
@@ -43,8 +55,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex)}"/>
-                            <TextBlock Text=" " />
+
                             <TextBlock Text="{Binding Name}" />
                         </StackPanel>
                     </DataTemplate>
@@ -55,16 +66,16 @@
             <Button Margin="0,5,0,0" x:Name="ButtonRemoveSelectedUsers" Content="Remove Selected"
                     Command="{Binding RemoveSelectedInAllUsersCommand}"/>
         </StackPanel>
-        
+
         <!--Randomize-->
         <StackPanel Grid.Column="1" Grid.Row="0" Margin="10" Width="128"  >
             <Label Content="Ranomizer"/>
-            <Button Margin="0" Height="85"
+            <Button Margin="0" Height="116"
                 x:Name="ButtonRandomize"
                 Content="Randomize"
                 Command="{Binding GenerateRandomTeamsCommand}" />
         </StackPanel>
-        
+
         <!--Invalid groups/Team size-->
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10" Width="128">
             <Label Content="Team Size"/>
@@ -85,7 +96,7 @@
             </ComboBox>
 
             <Label Content="Invalid Groups"/>
-            <ListBox Height="167"
+            <ListBox Height="476" MinHeight="176" VerticalAlignment="Stretch"
                      ItemsSource="{Binding InvalidGroups}"
                      SelectionMode="Single"
                      SelectedItem="{Binding SelectedGroup}"
@@ -104,11 +115,11 @@
             <Button Margin="0,5,0,0" x:Name="ButtonRemoveSelectedGroups" Content="Remove Selected"
                     Command="{Binding RemoveSelectedInGroupsCommand}"/>
         </StackPanel>
-        
+
         <!--Group/Team users-->
         <StackPanel Grid.Column="2" Grid.Row="0" Margin="10" Width="128">
-            <Label Content="Users"/>
-            <ListBox Height="85"
+            <Label Content="Team Members"/>
+            <ListBox Height="116"
                      ItemsSource="{Binding SelectedGroup.Users}"
                      x:Name="GroupTeamList"
                      SelectionMode="Single"
@@ -124,16 +135,19 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
-        
+
         <!--Teams-->
         <StackPanel Grid.Column="2" Grid.Row="1" Margin="10" Width="128">
-            <Label Content="Teams"/>
-            <ListBox Height="250"
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Teams"/>
+                <Label Content="{Binding Path=Teams.Count}"/>
+            </StackPanel>
+            <ListBox Height="504    "
                      ItemsSource="{Binding Teams}"
                      x:Name="TeamList"
                      SelectedItem="{Binding SelectedGroup}"
                      SelectionMode="Single"
-                     ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                     ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionChanged="TeamList_SelectionChanged">
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -144,6 +158,11 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <StackPanel Orientation="Vertical">
+                <Button Margin="0,5,0,0" x:Name="ButtonSaveTeams" Content="Save Teams" Command="{Binding SaveTeams}" Height="20" HorizontalAlignment="Stretch" Click="ButtonSaveTeams_Click"/>
+                <Button Margin="0,5,0,0" x:Name="ButtonLoadTeams" Content="Load Tems" Command="{Binding LoadTeams}" Height="20" HorizontalAlignment="Stretch"/>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

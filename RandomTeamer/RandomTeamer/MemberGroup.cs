@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace RandomTeamer {
+    //[Serializable]
     public class MemberGroup {
         #region static
         public static int count = 0;

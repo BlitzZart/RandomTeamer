@@ -21,6 +21,8 @@ namespace RandomTeamer {
             if (users.Count == 0)
                 return;
 
+            int teamCounter = 1;
+
             Random random = new Random();
             // get first user of the new team
             Member m1 = users[random.Next(0, users.Count - 1)];
@@ -34,6 +36,8 @@ namespace RandomTeamer {
 
             // create new team
             MemberGroup team = new MemberGroup();
+            team.Number = teamCounter++;
+
             // add firts user
             team.Users.Add(m1);
 
@@ -53,9 +57,12 @@ namespace RandomTeamer {
                 if (validUsers.Count > 1)
                     rndIndex = random.Next(0, validUsers.Count - 1);
 
-                team.Users.Add(validUsers[rndIndex]);
-                users.Remove(validUsers[rndIndex]);
-                validUsers.Remove(validUsers[rndIndex]);
+                if (validUsers.Count > rndIndex)
+                {
+                    team.Users.Add(validUsers[rndIndex]);
+                    users.Remove(validUsers[rndIndex]);
+                    validUsers.Remove(validUsers[rndIndex]);
+                } 
             }
             // finally add the new team
             _teams.Add(team);
