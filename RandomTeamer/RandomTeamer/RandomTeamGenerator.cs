@@ -24,8 +24,20 @@ namespace RandomTeamer {
             int teamCounter = 1;
 
             Random random = new Random();
+
+            Member m1;
             // get first user of the new team
-            Member m1 = users[random.Next(0, users.Count - 1)];
+            // there is a chance that we start with the last one
+            // because otherwise the last user will allwas be at the end
+            if (random.Next(0, 3) > 1)
+            {
+                m1 = users[random.Next(0, users.Count - 1)];
+            }
+            else
+            {
+                m1 = users[users.Count - 1];
+            }
+
             // remove this user from the pool of all users
             users.Remove(m1);
             // get all valid users left in the pool
