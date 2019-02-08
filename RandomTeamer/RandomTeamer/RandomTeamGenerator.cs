@@ -6,11 +6,21 @@ namespace RandomTeamer {
     public static class RandomTeamGenerator {
         static List<MemberGroup> _teams;
         static int _teamSize;
+
+        private static Random shuffleRnd = new Random();
+
         public static List<MemberGroup> GetTeams(List<Member> users, int teamSize) {
             _teams = new List<MemberGroup>();
             _teamSize = teamSize;
 
-            MakeTeam(users);
+            List<Member> workOnList = new List<Member>(users);
+            workOnList.Shuffle();
+
+            MakeTeam(workOnList);
+
+            // shuffle teams just prevents that first member found with invalid members
+            // appears always first
+            _teams.Shuffle();
 
             return _teams;
         }
@@ -25,17 +35,13 @@ namespace RandomTeamer {
 
             Random random = new Random();
 
-            Member m1;
             // get first user of the new team
-            // there is a chance that we start with the last one
-            // because otherwise the last user will allwas be at the end
-            if (random.Next(0, 3) > 1)
+            // first look for members with illegal group
+            Member m1 = GetMemberWithIllegal(users);
+            // take random if no illegal groups left
+            if (m1 == null)
             {
                 m1 = users[random.Next(0, users.Count - 1)];
-            }
-            else
-            {
-                m1 = users[users.Count - 1];
             }
 
             // remove this user from the pool of all users
@@ -80,6 +86,34 @@ namespace RandomTeamer {
             _teams.Add(team);
 
             MakeTeam(users);
+        }
+
+        private static Member GetMemberWithIllegal(List<Member> users)
+        {
+            Member next = null;
+            foreach(Member item in users)
+            {
+                if (item.IllegalMembers.Count > 0)
+                {
+                    next = item;
+                    break;
+                }
+            }
+
+            return next;
+        }
+
+        private static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = shuffleRnd.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:RandomTeamer"
         xmlns:ff="clr-namespace:FunctionalFun.UI.Behaviours"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="RandomTeamer.MainWindow"
-        Title="MainWindow" Height="810" Width="460" MinHeight="460"
+        Title="Random Teamer" Height="820" Width="460" MinHeight="460"
         ResizeMode="NoResize">
 
     <Window.DataContext>
@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--Input-->
@@ -31,7 +31,7 @@
                     <KeyBinding Key="Enter" Command="{Binding AddMember}"/>
                 </TextBox.InputBindings>
             </TextBox>
-            <Button Margin="0,5,0,0" x:Name="ButtonAddMember" Content="Add User" Command="{Binding AddMember}" Height="64"/>
+            <Button Margin="0,5,0,0" x:Name="ButtonAddMember" Content="Add User" Command="{Binding AddMember}" Height="76 "/>
             <StackPanel Orientation="Horizontal">
                 <Button Margin="0,5,5,0" x:Name="ButtonSaveNames" Content="Save" Command="{Binding SaveNames}" Height="24" HorizontalAlignment="Stretch" Width="61"/>
                 <Button Margin="0,5,5,0" x:Name="ButtonLoadNames" Content="Load" Command="{Binding LoadNames}" Height="24" HorizontalAlignment="Stretch" Width="61"/>
@@ -70,7 +70,7 @@
         <!--Randomize-->
         <StackPanel Grid.Column="1" Grid.Row="0" Margin="10" Width="128"  >
             <Label Content="Ranomizer"/>
-            <Button Margin="0" Height="116"
+            <Button Margin="0" Height="128"
                 x:Name="ButtonRandomize"
                 Content="Randomize"
                 Command="{Binding GenerateRandomTeamsCommand}" />
@@ -79,8 +79,8 @@
         <!--Invalid groups/Team size-->
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10" Width="128">
             <Label Content="Team Size"/>
-            <ComboBox Margin="0,0,0,5" Text="Is not open"
-                      SelectedIndex="{Binding SelectedTeamSize}">
+            <ComboBox Margin="0,0,0,5"
+                      SelectedIndex="{Binding SelectedTeamSize, Mode=OneWayToSource}">
                 <ComboBoxItem x:Name="cbi1" Content="1"/>
                 <ComboBoxItem x:Name="cbi2" Content="2"/>
                 <ComboBoxItem x:Name="cbi3" Content="3"/>
@@ -93,6 +93,14 @@
                 <ComboBoxItem x:Name="cbi10" Content="10"/>
                 <ComboBoxItem x:Name="cbi11" Content="11"/>
                 <ComboBoxItem x:Name="cbi12" Content="12"/>
+                <ComboBoxItem x:Name="cbi13" Content="13"/>
+                <ComboBoxItem x:Name="cbi14" Content="14"/>
+                <ComboBoxItem x:Name="cbi15" Content="15"/>
+                <ComboBoxItem x:Name="cbi16" Content="16"/>
+                <ComboBoxItem x:Name="cbi17" Content="17"/>
+                <ComboBoxItem x:Name="cbi18" Content="18"/>
+                <ComboBoxItem x:Name="cbi19" Content="19"/>
+                <ComboBoxItem x:Name="cbi20" Content="20"/>
             </ComboBox>
 
             <Label Content="Invalid Groups"/>
@@ -119,7 +127,7 @@
         <!--Group/Team users-->
         <StackPanel Grid.Column="2" Grid.Row="0" Margin="10" Width="128">
             <Label Content="Team Members"/>
-            <ListBox Height="116"
+            <ListBox Height="128"
                      ItemsSource="{Binding SelectedGroup.Users}"
                      x:Name="GroupTeamList"
                      SelectionMode="Single"
